@@ -12,14 +12,16 @@ function KnowMore() {
     const [email, setEmail] = useState('');
     const [captchaValid, setCaptchaValid] = useState(false);
 
-    const captcha = useRef(null);
 
+    const captcha = useRef(null);
+    //Pega o validador do captcha e se for verdadeiro altera o value do state;
     const onRecaptcha = () => {      
         if (captcha.current.getValue()){
             setCaptchaValid(!captchaValid);
         };
     }
 
+    //Pegar os dados do input e adicionar ao localStorage;
     const addStorage = (object) => {
         let storage = JSON.parse(localStorage.getItem('clients'));
         if (storage === null){
@@ -31,8 +33,8 @@ function KnowMore() {
           }   
     }
 
+    //Validando os campos, defini nome abaixo de 5 letras, telefone com menos de 9 digitos e email sem o @ como inválidos, no final adiciona ao objeto e zera os campos;
     function onChange () {
-        //validationCaptcha();
         if (name.split('').length < 5){
             window.alert('Digite seu nome e sobrenome');
         }else if (phone.split('').length < 9){
@@ -53,7 +55,7 @@ function KnowMore() {
 
     return (
         <Know>
-            <p id="text"> Quer saber mais? </p>
+            <h2 id="text"> Quer saber mais? </h2>
             <div id='line'></div>
             <img id='call' src="imgs/phone-call.png" />
             <p id='textcall'> Ainda sobrou alguma dúvida sobre qual o melhor Plano para sua empresa? Envie seus dados e deixe que a NS Benefícios entrará em contato assim que possível. </p>
@@ -75,7 +77,7 @@ function KnowMore() {
             <p id='number'> 4020-6440 </p>  
             <button id='whatsapp'> <FaWhatsapp id='iconwhats'/>
             <p id='whatstxt'> CLIQUE AQUI PARA ENVIAR UMA MENSAGEM </p></button> 
-            <button id='callus'><IconPhone icon={faPhone}/> <p id='callustxt'>CLIQUE AQUI PARA LIGAR</p></button>
+            <button id='callus'><IconPhone id='iconphone' icon={faPhone}/> <p id='callustxt'>CLIQUE AQUI PARA LIGAR</p></button>
             <p id='operation'> Horário de Atendimento de 8h às 17h </p>
         </Know>
     )
@@ -88,6 +90,12 @@ const Know = styled.div`
     width: 1366px;
     top: -532px;
 
+    @media(max-width: 666px){
+        width: 380px;
+        left: 130px;
+        top: -22px;
+    }
+
     #text {
         position: relative;
         top: 10px;
@@ -97,14 +105,32 @@ const Know = styled.div`
         text-align: left;
         font: normal normal bold 29px/39px Open Sans;
         color: #171717;
+
+        @media(max-width: 666px){
+            top: 1px;
+            left: 18px;
+            width: 191px;
+            height: 30px;
+            text-align: left;
+            font: normal normal bold 22px/30px Open Sans;
+            letter-spacing: 0px;
+            color: #171717;
+        }
     }
 
     #line{
         position: relative;
         top: -15px;
         left: 103px;
-        border: solid 1px #F7B53D;
+        border-bottom: solid 2px #F7B53D;
         width: 171px;
+
+        @media(max-width: 666px){
+            top: -28px;
+            left: 18px;
+            width: 150px;
+            height: 30px;
+        }
     }
 
     #call{
@@ -113,6 +139,13 @@ const Know = styled.div`
         top: 50px;
         width: 138px;
         height: 138px;
+
+        @media(max-width: 666px){
+            left: 24px;
+            width: 101px;
+            height: 101px;
+            top: 12px;
+        }
     }
     
     #textcall {
@@ -125,6 +158,16 @@ const Know = styled.div`
         font: normal normal normal 21px/27px Open Sans;
         letter-spacing: 0px;
         color: #404040;
+
+        @media(max-width: 666px){
+            left: 138px;
+            width: 205px;
+            height: 120px;
+            text-align: left;
+            font: normal normal normal 15px/20px Open Sans;
+            letter-spacing: 0px;
+            color: #404040;
+        }
     }
 
     #name{
@@ -137,6 +180,17 @@ const Know = styled.div`
         font: normal normal bold 21px/24px Open Sans;
         letter-spacing: 0px;
         color: #ECC63C;
+
+        @media(max-width: 666px){
+            top: -85px;
+            left: 17px;
+            width: 41px;
+            height: 17px;
+            text-align: left;
+            font: normal normal bold 12px/17px Open Sans;
+            letter-spacing: 0px;
+            color: #E8BB15;
+        }
     }
 
     #inputname{
@@ -146,6 +200,13 @@ const Know = styled.div`
         width: 544px;
         height: 54px;
         border: 1px solid #D0BC90;
+
+        @media(max-width: 666px){
+            top: -95px;
+            left: 17px;
+            width: 315px;
+            height: 32px;
+        }
     }
 
     #phone{
@@ -158,6 +219,17 @@ const Know = styled.div`
         font: normal normal bold 21px/22px Open Sans;
         letter-spacing: 0px;
         color: #ECC63C;
+
+        @media(max-width: 666px){
+            top: -85px;
+            left: 17px;
+            width: 41px;
+            height: 17px;
+            text-align: left;
+            font: normal normal bold 12px/17px Open Sans;
+            letter-spacing: 0px;
+            color: #E8BB15;
+        }
     }
 
     #inputphone{
@@ -167,6 +239,13 @@ const Know = styled.div`
         width: 544px;
         height: 54px;
         border: 1px solid #D0BC90;
+
+        @media(max-width: 666px){
+            top: -95px;
+            left: 17px;
+            width: 315px;
+            height: 32px;
+        }
     }
 
     #email{
@@ -179,6 +258,17 @@ const Know = styled.div`
         font: normal normal bold 21px/22px Open Sans;
         letter-spacing: 0px;
         color: #ECC63C;
+
+        @media(max-width: 666px){
+            top: -85px;
+            left: 17px;
+            width: 41px;
+            height: 17px;
+            text-align: left;
+            font: normal normal bold 12px/17px Open Sans;
+            letter-spacing: 0px;
+            color: #E8BB15;
+        }
     }
 
     #inputemail {
@@ -188,6 +278,13 @@ const Know = styled.div`
         width: 544px;
         height: 54px;
         border: 1px solid #D0BC90;
+
+        @media(max-width: 666px){
+            top: -95px;
+            left: 17px;
+            width: 315px;
+            height: 32px;
+        }
     }
 
     #recaptcha{
@@ -196,6 +293,13 @@ const Know = styled.div`
         left: 328px;
         width: 214px;
         height: 63px;
+
+        @media(max-width: 666px){
+            top: -80px;
+            left: 78px;
+            width: 340px;
+            height: 32px;
+        }
     }
 
     #contact{
@@ -209,6 +313,13 @@ const Know = styled.div`
         border-radius: 25px;
         border: white;
         cursor: pointer;
+
+        @media(max-width: 666px){
+            top: -38px;
+            left: 41px;
+            width: 289px;
+            height: 43px;
+        }
     }
 
     #contacttxt{
@@ -232,6 +343,17 @@ const Know = styled.div`
         font: normal normal bold 18px/23px Open Sans;
         letter-spacing: 0px;
         color: #4B4B4B;
+
+        @media(max-width: 666px){
+            top: -16px;
+            left: 46px;
+            width: 279px;
+            height: 20px;
+            text-align: center;
+            font: normal normal bold 15px/20px Open Sans;
+            letter-spacing: 0px;
+            color: #4B4B4B;
+        }
     }
     
 
@@ -245,6 +367,17 @@ const Know = styled.div`
         font: normal normal bold 29px/39px Open Sans;
         letter-spacing: 0px;
         color: #E8BB15;
+
+        @media(max-width: 666px){
+            top: -35px;
+            left: 127px;
+            width: 124px;
+            height: 34px;
+            text-align: center;
+            font: normal normal bold 25px/34px Open Sans;
+            letter-spacing: 0px;
+            color: #E8BB15;
+        }
     }
 
     #whatsapp{
@@ -257,6 +390,17 @@ const Know = styled.div`
         box-shadow: 0px 3px 6px #00000029;
         border-radius: 12px;
         border: white;
+
+        @media(max-width: 666px){
+            top: -35px;
+            left: 17px;
+            width: 340px;
+            height: 75px;
+            background: #F7B53D 0% 0% no-repeat padding-box;
+            box-shadow: 0px 3px 6px #00000029;
+            border-radius: 12px;
+        }
+
         #iconwhats {
             width: 53px;
             height: 58px;
@@ -265,6 +409,15 @@ const Know = styled.div`
             right: 121px;
             top: 14px;
             color: white;
+
+            @media(max-width: 666px){
+                top: 9px;
+                right: 97px;
+                width: 47px;
+                height: 51px;
+                background: #F7B53D 0% 0% no-repeat padding-box;
+                color: white;
+            }
         }
     }
 
@@ -278,6 +431,17 @@ const Know = styled.div`
         font: normal normal bold 18px/22px Open Sans;
         letter-spacing: 0px;
         color: #ffffff;
+
+        @media(max-width: 666px){
+            top: 9px;
+            left: 127px;
+            width: 186px;
+            height: 40px;
+            text-align: left;
+            font: normal normal bold 15px/20px Open Sans;
+            letter-spacing: 0px;
+            color: #FFFFFF;
+        }
     }
 
     #callus{    
@@ -290,6 +454,34 @@ const Know = styled.div`
         box-shadow: 0px 3px 6px #00000029;
         border-radius: 12px;
         border: white;
+
+        @media(max-width: 666px){
+            top: -20px;
+            left: 17px;
+            width: 340px;
+            height: 75px;
+            background: #F7B53D 0% 0% no-repeat padding-box;
+            box-shadow: 0px 3px 6px #00000029;
+            border-radius: 12px;
+        }
+
+        #iconphone{
+            margin-top: 16px;
+            margin-left: -255px;
+            color: white;
+            width: 48px;
+            height: 48px; 
+
+            @media(max-width: 666px){
+                top: 9px;
+                margin-left: -197px;
+                right: 97px;
+                width: 40px;
+                height: 51px;
+                background: #F7B53D 0% 0% no-repeat padding-box;
+                color: white;
+            }  
+        }
     }
 
     #callustxt{
@@ -301,11 +493,22 @@ const Know = styled.div`
         font: normal normal bold 18px/22px Open Sans;
         letter-spacing: 0px;
         color: #FFFFFF;
+
+        @media(max-width: 666px){
+            top: 9px;
+            left: 127px;
+            width: 186px;
+            height: 40px;
+            text-align: left;
+            font: normal normal bold 15px/20px Open Sans;
+            letter-spacing: 0px;
+            color: #FFFFFF;
+        }
     }
 
     #operation{
         position: relative;
-        top: -318px;
+        top: -294px;
         left: 856px;
         width: 248px;
         height: 18px;
@@ -313,13 +516,21 @@ const Know = styled.div`
         font: normal normal normal 13px/18px Open Sans;
         letter-spacing: 0px;
         color: #A7A7A7;
+
+        @media(max-width: 666px){
+            top: -30px;
+            left: 81px;
+            width: 214px;
+            height: 17px;
+            text-align: center;
+            font: normal normal normal 12px/17px Open Sans;
+            letter-spacing: 0px;
+            color: #A7A7A7;
+        }
     }
 `
 
 const IconPhone = styled(FontAwesomeIcon)`
-    margin-top: 16px;
-    margin-left: -255px;
-    color: white;
-    width: 48px;
-    height: 48px;   
+
+
 `

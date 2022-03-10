@@ -16,15 +16,12 @@ function App(props){
       .then((e) => {
       
         setData(e.data)
-        console.log(e.data);
          
       })
       .catch((e) => {
           setData([])
       })
     }, [])
-
-    console.log(data);
 
   return ( 
     <DivBody>
@@ -39,8 +36,10 @@ export default App;
 
 
 const DivBody = styled.div`
-
+border: solid 1px #8080805c;
 `
+
+
 
 
 

@@ -6,45 +6,43 @@ import {faAngleDown, faAngleUp, faLocationDot, faPhone} from '@fortawesome/free-
 function Hospitais (props) {
     const [open, setOpen] = useState(false);
 
+    // Coloquei as imagens e o nome dos hospitais em um objeto pra fazer um map na div e evitar ter que adicionar mais divs;
     const hospitaisEmDestaque = [{
         name: 'Hospital Vitória Barra', foto:'imgs/grupo de máscara 2.png'}, 
         {name: 'Hospital Perinatal Laranjeiras', foto:'imgs/grupo de máscara 7.png'},
         {name: 'Hospital Copa D Or', foto: 'imgs/grupo de máscara 6.png'}]
-    
 
-    console.log(props.list);
-
+    // Pegar apenas os dados dos três "hospitais" da api;
     const threeHospitals = (list) => {
         let newList = [];
             for (let i = 0; i < 3; i++) {
                 newList.push(list[i]);
-                console.log(newList);
             }     
         return newList ;
     }
 
+    // Abrir a div oculta/fechar a div visivel;
     const openWindow = () => {
         let api = document.querySelector('#api');
         if (open === false){
             api.style.display = 'flex';
             setOpen(!open);
         } else {
-            api.style.display = '';
+            api.style.display = 'none';
             setOpen(!open);
         }
     }
 
     return (
         <Hospitals>
-            <div id="hospitals"><p id="hospitalstxt">Hospitais em destaque</p></div>
+            <p id="hospitals">Hospitais em destaque</p>
             <div id="line"></div>
-            <div id="description"> 
-                <p id="descriptiontxt">Contando com os melhores hospitais do Rio de Janeiro, o plano Ouro dispõe para você as redes mais referenciadas com diversos benefícios para que você tenha um atendimento totalmente personalizado.</p>     
-            </div>
+            <p id="description">Contando com os melhores hospitais do Rio de Janeiro, o plano Ouro dispõe para você as redes mais referenciadas com diversos benefícios para que você tenha um atendimento totalmente personalizado.</p>     
+           
             {hospitaisEmDestaque.map((list, index)=>(
                 <Photos key={index}>
                     <img id={`hosp${index}`} src={list.foto}></img>  
-                    <p id={`div${index}`}> {list.name} <br /> <IconArrown icon={open ? faAngleDown : faAngleUp} onClick={(()=> openWindow())} /> </p> 
+                    <p id={`text${index}`}> {list.name} <br /> <IconArrown index={index} icon={open ? faAngleDown : faAngleUp} onClick={(()=> openWindow())} /></p> 
                 </Photos>
             ))} 
             {(threeHospitals(props.list)[0] === undefined) ? 
@@ -80,6 +78,12 @@ export default Hospitais;
 
 const Hospitals = styled.div`
     position: relative;
+    
+
+    @media(max-width: 666px){
+        width: 380px;
+        left: 130px;
+    }
 
     #hospitals{
         position: relative;
@@ -87,21 +91,36 @@ const Hospitals = styled.div`
         left: 104px;
         width: 330px;
         height: 39px;
-    }
-
-    #hospitalstxt{  
         text-align: left;
         font: normal normal bold 29px/39px Open Sans;
         letter-spacing: 0px;
         color: #171717;
+
+        @media(max-width: 666px) {
+            top: 15px;
+            left: 16px;
+            width: 251px;
+            height: 30px;
+            text-align: left;
+            font: normal normal bold 22px/30px Open Sans;
+            letter-spacing: 0px;
+            color: #171717;
+        }
     }
 
     #line {
         position: relative;
-        top: 96px;
+        top: 68px;
         left: 103px;
         width: 177px;
-        border-bottom: solid 1px #F7B53D;
+        border-bottom: solid 2px #F7B53D;
+
+        @media(max-width: 666px) {
+            top: -30px;
+            left: 16px;
+            width: 158px;
+            height: 30px;          
+        }
     }
 
     #description{
@@ -109,15 +128,21 @@ const Hospitals = styled.div`
         top: 98px;
         left: 103px;
         width: 1160px;
-        height: 54px;
-
-    }
-
-    #descriptiontxt{
-        text-align: left;
+        height: 54px;text-align: left;
         font: normal normal normal 23px/27px Open Sans;
         letter-spacing: 0px;
         color: #4B4B4B;
+
+        @media(max-width: 666px) {
+            top: -30px;
+            left: 17px;
+            width: 340px;
+            height: 100px; 
+            text-align: left;
+            font: normal normal normal 15px/20px Open Sans;
+            letter-spacing: 0px;
+            color: #4B4B4B;
+        }
     }
 
 `
@@ -130,22 +155,38 @@ const IconArrown = styled(FontAwesomeIcon)`
     height: 20px;
     z-index: 1;
     color: gray;
+
+    @media(max-width: 666px){
+        display: ${props => (props.index == 2) ? '' : 'none'}
+    }
 `
 
 const Photos = styled.div`
+    @media(max-width: 666px){
+        display: flex;
+        flex-direction: column;
+    }
+
     #hosp0{
         position: relative;
         top: 130px;
         left: 95px;
         width: 376px;
         height: 230px;
+
+        @media(max-width: 666px){
+            left: 22px;
+            width: 340px;
+            height: 208px;
+            top: -26px;
+        }
         
     }
 
-    #div0 {
+    #text0 {
         position: relative;
         background: white;
-        top: 107px;
+        top: 100px;
         left: 95px;
         width: 376px;
         height: 47px;
@@ -154,19 +195,39 @@ const Photos = styled.div`
         letter-spacing: 0px;
         color: #E8BB15;   
         z-index: 1;
+        border: 1px solid #8080804a;
+
+
+        @media(max-width: 666px){
+            height: 35px;
+            left: 22px;
+            width: 340px;
+            top: -52px;
+            text-align: center;
+            font: normal normal bold 15px/20px Open Sans;
+            letter-spacing: 0px;
+            color: #E8BB15;
+        }
     }
 
     #hosp1{
         position: relative;
-        top: -192px;
+        top: -190px;
         left: 495px;
         width: 376px;
         height: 230px;
+
+        @media(max-width: 666px){
+            left: 22px;
+            width: 340px;
+            height: 208px;
+            top: -26px;
+        }
     }
 
-    #div1 {
+    #text1 {
         position: relative;
-        top: -213px;
+        top: -224px;
         left: 495px;
         width: 376px;
         height: 47px;
@@ -177,7 +238,18 @@ const Photos = styled.div`
         letter-spacing: 0px;
         color: #E8BB15;
         z-index: 1;
+        border: 1px solid #8080804a;
 
+        @media(max-width: 666px){
+            left: 22px;
+            width: 340px;
+            height: 35px;
+            top: -47px;
+            text-align: center;
+            font: normal normal bold 15px/20px Open Sans;
+            letter-spacing: 0px;
+            color: #E8BB15;
+        }
     }
 
     #hosp2{
@@ -187,12 +259,18 @@ const Photos = styled.div`
         width: 376px;
         height: 230px;
 
+        @media(max-width: 666px){
+            top: -33px;
+            left: 22px;
+            width: 340px;
+            height: 208px;
+        }
     }
 
-    #div2 {
+    #text2 {
         position: relative;
-        top: -534px;
-        left: 887px;
+        top: -546px;
+        left: 886px;
         width: 376px;
         height: 47px;
         background: white;
@@ -201,6 +279,18 @@ const Photos = styled.div`
         letter-spacing: 0px;
         color: #E8BB15;
         z-index: 1;
+        border: 1px solid #8080804a;
+
+        @media(max-width: 666px){
+            top: -55px;
+            left: 21px;
+            width: 340px;
+            height: 35px;
+            text-align: center;
+            font: normal normal bold 15px/20px Open Sans;
+            letter-spacing: 0px;
+            color: #E8BB15;
+        }
     }
 
 `
@@ -215,8 +305,17 @@ const Api = styled.div `
     width: 1162px;
     margin-left: 87px;
 
+    @media(max-width: 666px){
+        width: 380px;
+        top: 10px;
+        display: flex;
+        flex-direction: column;
+        right: 430px;
+    }
+
     #colunm {
-        height: 300px;
+        height: 380px;
+        left: 81px;
     }
 
     #image {
@@ -224,6 +323,13 @@ const Api = styled.div `
         width: 276px;
         top: 69px;
         left: 50px;
+
+        @media(max-width: 666px){
+            position: relative;
+            width: 158px;
+            top: 104px;
+            left: 375px;
+        }
     }
 
     #name{
@@ -247,11 +353,22 @@ const Api = styled.div `
         font: normal normal normal 23px/27px Open Sans;
         letter-spacing: 0px;
         color: #4B4B4B;
+
+        @media(max-width: 666px){
+            width: 340px;
+            font: normal normal normal 15px/22px Open Sans;
+        }
     }
 
     #infos{
         position: relative;
         top: -7px;
+
+        @media(max-width: 666px){
+            position: relative;
+            right: 407px;
+            top: 139px;
+        }
     }
 
     #adress{
@@ -263,6 +380,10 @@ const Api = styled.div `
         text-align: left;
         letter-spacing: 0px;
         color: #000000;
+
+        @media(max-width: 666px){
+            font-size: 12px;
+        }
     }
 
     #contact{
@@ -274,6 +395,10 @@ const Api = styled.div `
         text-align: left;
         letter-spacing: 0px;
         color: #000000;
+
+        @media(max-width: 666px){
+            font-size: 12px;
+        }
     }
 
 `
