@@ -2,57 +2,43 @@ import {useState} from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faAngleDown, faAngleUp, faLocationDot, faPhone} from '@fortawesome/free-solid-svg-icons';
+import {useMediaQuery} from 'react-responsive';
+import {OpenDiv, threeHospitals, hospitaisEmDestaque} from './Hospitals.action';
 
 function Hospitais (props) {
     const [open, setOpen] = useState(false);
 
-    // Coloquei as imagens e o nome dos hospitais em um objeto pra fazer um map na div e evitar ter que adicionar mais divs;
-    const hospitaisEmDestaque = [{
-        name: 'Hospital Vitória Barra', foto:'imgs/grupo de máscara 2.png'}, 
-        {name: 'Hospital Perinatal Laranjeiras', foto:'imgs/grupo de máscara 7.png'},
-        {name: 'Hospital Copa D Or', foto: 'imgs/grupo de máscara 6.png'}]
+    const mobile = useMediaQuery({ query: '(max-width: 666px)' })
 
-    // Pegar apenas os dados dos três "hospitais" da api;
-    const threeHospitals = (list) => {
-        let newList = [];
-            for (let i = 0; i < 3; i++) {
-                newList.push(list[i]);
-            }     
-        return newList ;
-    }
-
-    // Abrir a div oculta/fechar a div visivel;
+    //Abrir a div oculta/fechar a div visivel;
     const openWindow = () => {
-        let api = document.querySelector('#api');
         if (open === false){
-            api.style.display = 'flex';
+            OpenDiv(open);
             setOpen(!open);
         } else {
-            api.style.display = 'none';
+            OpenDiv(open);
             setOpen(!open);
         }
     }
 
     return (
-        <Hospitals>
+        <Hospitals id='div'>
             <p id="hospitals">Hospitais em destaque</p>
             <div id="line"></div>
             <p id="description">Contando com os melhores hospitais do Rio de Janeiro, o plano Ouro dispõe para você as redes mais referenciadas com diversos benefícios para que você tenha um atendimento totalmente personalizado.</p>     
            
             {hospitaisEmDestaque.map((list, index)=>(
-                <Photos key={index}>
-                    <img id={`hosp${index}`} src={list.foto}></img>  
-                    <p id={`text${index}`}> {list.name} <br /> <IconArrown index={index} icon={open ? faAngleDown : faAngleUp} onClick={(()=> openWindow())} /></p> 
-                </Photos>
-            ))} 
-            {(threeHospitals(props.list)[0] === undefined) ? 
+                <Photos id={`photos${index}`} key={index} open={open}>
+                    <img id={`hosp${index}`} open={open} src={list.foto}></img>  
+                    <p id={`text${index}`} open={open}> {list.name} <br /> <IconArrown index={index} icon={open ? faAngleDown : faAngleUp} onClick={(()=> openWindow())} /></p> 
+            {(threeHospitals(props.list)[0] === undefined || list.name !== 'Hospital Vitória Barra') ? 
                 <Api> Carregando ...</Api> : 
                 
                 <Api id="api">
                 {threeHospitals(props.list).map((list, index)=>(    
-                    <div id='colunm' key={index}>
-                        <div id='open'>
-                            <img id='image' src={list.image} alt="" />
+                    <div id={`colunm${index}`}  key={index} >
+                        <div id='open' >
+                            <img id='image' src={list.image} open={open}/>
                             <h2 id='name'> {(list.name !== undefined) ? list.name : 'Carregando...'} </h2>
                             <div id='detail'><p id='detailtxt'>{list.detail}</p></div>
                         </div>
@@ -66,9 +52,10 @@ function Hospitais (props) {
                             </div>
                         </div>
                     </div>
-                    ))}  
-
-                </Api> }               
+                    ))} 
+                </Api> } 
+                </Photos>
+            ))}               
             
         </Hospitals>
     )
@@ -77,10 +64,14 @@ function Hospitais (props) {
 export default Hospitais;
 
 const Hospitals = styled.div`
+    #div{
     position: relative;
+    height: 1135px;}
+
     
 
     @media(max-width: 666px){
+        position: relative;
         width: 380px;
         left: 130px;
     }
@@ -157,14 +148,19 @@ const IconArrown = styled(FontAwesomeIcon)`
     color: gray;
 
     @media(max-width: 666px){
-        display: ${props => (props.index == 2) ? '' : 'none'}
+        display: ${props => (props.index == 0) ? '' : 'none'}
     }
 `
 
 const Photos = styled.div`
     @media(max-width: 666px){
+        position: relative;
         display: flex;
         flex-direction: column;
+
+        photos1{
+            top: ${props => (props.open === false) ? '-28px' : '960px'};
+        }
     }
 
     #hosp0{
@@ -221,7 +217,7 @@ const Photos = styled.div`
             left: 22px;
             width: 340px;
             height: 208px;
-            top: -26px;
+            top: ${props => (props.open === false) ? '-28px' : '960px'};
         }
     }
 
@@ -244,7 +240,7 @@ const Photos = styled.div`
             left: 22px;
             width: 340px;
             height: 35px;
-            top: -47px;
+            top: ${props => props.open === false ? '-56px;' : '935px;'}
             text-align: center;
             font: normal normal bold 15px/20px Open Sans;
             letter-spacing: 0px;
@@ -260,7 +256,7 @@ const Photos = styled.div`
         height: 230px;
 
         @media(max-width: 666px){
-            top: -33px;
+            top: ${props => props.open === false ? '-47px;' : '990px;'}
             left: 22px;
             width: 340px;
             height: 208px;
@@ -282,7 +278,7 @@ const Photos = styled.div`
         border: 1px solid #8080804a;
 
         @media(max-width: 666px){
-            top: -55px;
+            top: ${props => props.open === false ? '-75px;' : '960px;'}
             left: 21px;
             width: 340px;
             height: 35px;
@@ -313,9 +309,36 @@ const Api = styled.div `
         right: 430px;
     }
 
-    #colunm {
-        height: 380px;
-        left: 81px;
+    #colunm0 {
+        position: absolute;
+        top: 640px;
+
+        @media(max-width: 666px){
+            position: absolute;
+            top:10px;
+            
+        }
+    }
+
+    #colunm1 {
+        position: absolute;
+        top: 940px;
+
+        @media(max-width: 666px){
+            position: absolute;
+            top:310px;
+
+        }
+    }
+
+    #colunm2 {
+        position: absolute;
+        top: 1240px;
+
+        @media(max-width: 666px){
+            position: absolute;
+            top:610px;
+        }
     }
 
     #image {

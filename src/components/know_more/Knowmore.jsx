@@ -4,6 +4,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPhone} from '@fortawesome/free-solid-svg-icons';
 import { FaWhatsapp } from 'react-icons/fa';
+import {addStorage, Validator} from './know_more.action';
 
 
 function KnowMore() {
@@ -19,38 +20,17 @@ function KnowMore() {
         if (captcha.current.getValue()){
             setCaptchaValid(!captchaValid);
         };
-    }
-
-    //Pegar os dados do input e adicionar ao localStorage;
-    const addStorage = (object) => {
-        let storage = JSON.parse(localStorage.getItem('clients'));
-        if (storage === null){
-            localStorage.setItem('clients', JSON.stringify([object]));  
-          }
-          else {
-             storage.push(object);
-             localStorage.setItem('clients', JSON.stringify(storage));  
-          }   
-    }
+    }    
 
     //Validando os campos, defini nome abaixo de 5 letras, telefone com menos de 9 digitos e email sem o @ como inválidos, no final adiciona ao objeto e zera os campos;
     function onChange () {
-        if (name.split('').length < 5){
-            window.alert('Digite seu nome e sobrenome');
-        }else if (phone.split('').length < 9){
-            window.alert('Digite um telefone valido');
-        }else if (email.indexOf('@') === -1){
-            window.alert('Digite um email valido');         
-        }else if (captchaValid === false) {
-            window.alert('Aceite o recaptcha para continuar')
-        }   
-        else {
-            let object = {name:name, phone: phone, email: email};
-            addStorage(object); 
-            setName('');
-            setEmail('');
-            setPhone('');              
-        }
+        if (Validator(name, phone, email, captchaValid) === true){ 
+        let object = {name:name, phone: phone, email: email};
+        addStorage(object); 
+        setName('');
+        setEmail('');
+        setPhone('');
+        }          
     }
 
     return (
@@ -93,7 +73,7 @@ const Know = styled.div`
     @media(max-width: 666px){
         width: 380px;
         left: 130px;
-        top: -22px;
+        top: -35px;
     }
 
     #text {

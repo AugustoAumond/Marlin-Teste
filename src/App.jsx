@@ -36,7 +36,6 @@ export default App;
 
 
 const DivBody = styled.div`
-border: solid 1px #8080805c;
 `
 
 
